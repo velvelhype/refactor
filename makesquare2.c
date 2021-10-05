@@ -67,11 +67,8 @@ void	ft_change_map(char **map, t_map_info *p_info)
 {
 	int		i;
 	int		j;
-	t_tempcrs	*p_bsq;
 
 	i = 0;
-	p_bsq = malloc(sizeof(t_tempcrs));
-	set_bsq(p_bsq);
 	while (i < g_max)
 	{
 		j = 0;
@@ -83,7 +80,6 @@ void	ft_change_map(char **map, t_map_info *p_info)
 		i++;
 	}
 	ft_put_map(map, p_info);
-	free(p_bsq);
 	return ;
 }
 

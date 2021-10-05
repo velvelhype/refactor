@@ -45,7 +45,6 @@ int				is_end_newline(char *content);
 void			set_crs(t_tempcrs *p_tempcrs);
 int				ft_check_1(char **map, int col, int row, t_map_info *p_info);
 void			make_square(char **map, t_map_info *p_info);
-void			set_bsq(t_tempcrs *p_bsq);
 int				ft_map_colsize(char **map);
 
 #endif

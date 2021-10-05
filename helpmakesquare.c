@@ -39,10 +39,3 @@ int		ft_check_1(char **map, int col, int row, t_map_info *p_info)
 	}
 	return (1);
 }
-
-void	set_bsq(t_tempcrs *p_bsq)
-{
-	p_bsq->col = g_col;
-	p_bsq->row = g_row;
-	p_bsq->size = g_max;
-}
