@@ -1,18 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_validate_map.c                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: louisnop <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/29 22:48:35 by louisnop          #+#    #+#             */
-/*   Updated: 2020/01/30 07:19:14 by louisnop         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ft.h"
 
-int		ft_validate_1(char **map, t_info *info)
+int		is_t_info_(char **map, t_map_info *info)
 {
 	if (!(map[0] && map[1]))
 		return (FAIL);
@@ -23,7 +11,7 @@ int		ft_validate_1(char **map, t_info *info)
 	return (SUCCESS);
 }
 
-int		ft_validate_2(char **map, t_info *info)
+int		are_obstacle_and_empty_ok(char **map, t_map_info *info)
 {
 	int i;
 	int j;
@@ -41,7 +29,7 @@ int		ft_validate_2(char **map, t_info *info)
 	return (SUCCESS);
 }
 
-int		ft_validate_3(char **map, t_info *info)
+int		is_length_same(char **map, t_map_info *info)
 {
 	int i;
 	int len;
@@ -59,7 +47,7 @@ int		ft_validate_3(char **map, t_info *info)
 	return (SUCCESS);
 }
 
-int		ft_validate_4(char *content)
+int		is_end_newline(char *content)
 {
 	int		i;
 
@@ -71,13 +59,39 @@ int		ft_validate_4(char *content)
 	return (SUCCESS);
 }
 
-int		ft_validate(char **map, t_info *info)
+int		check_map_info(char **map)
 {
-	if (ft_validate_1(map, info) == FAIL)
+	int		len;
+	char	*line;
+
+	if (!map[0])
 		return (FAIL);
-	if (ft_validate_2(map, info) == FAIL)
+	line = map[0];
+	len = ft_strlen(line);
+	if (len < 4)
 		return (FAIL);
-	if (ft_validate_3(map, info) == FAIL)
+	int	i = -1;
+	while (++i < len - 3)
+		if (!(line[i] >= '0' && line[i] <= '9'))
+			return (FAIL);
+	if (!(ft_is_printable(line[len - 1]) &&
+				ft_is_printable(line[len - 2]) &&
+				ft_is_printable(line[len - 3])))
+		return (FAIL);
+	if (line[len - 1] == line[len - 2] ||
+			line[len - 2] == line[len - 3] ||
+			line[len - 3] == line[len - 1])
+		return (FAIL);
+	return (SUCCESS);
+}
+
+int		ft_validate(char **map, t_map_info *info)
+{
+	if (is_t_info_(map, info) == FAIL)
+		return (FAIL);
+	if (are_obstacle_and_empty_ok(map, info) == FAIL)
+		return (FAIL);
+	if (is_length_same(map, info) == FAIL)
 		return (FAIL);
 	return (SUCCESS);
 }

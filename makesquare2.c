@@ -1,22 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   makesquare2.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: louisnop <louisnop@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/29 21:46:00 by louisnop          #+#    #+#             */
-/*   Updated: 2020/01/30 02:37:11 by louisnop         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ft.h"
 
 extern	int g_max;
 extern	int g_col;
 extern	int g_row;
 
-int		ft_check_2(char **map, t_tempcrs *p_tempcrs, t_info *p_info)
+int		ft_check_2(char **map, t_tempcrs *p_tempcrs, t_map_info *p_info)
 {
 	int i;
 
@@ -41,7 +29,7 @@ int		ft_check_2(char **map, t_tempcrs *p_tempcrs, t_info *p_info)
 	return (1);
 }
 
-void	ft_check_3(char **map, t_tempcrs *p_tempcrs, t_info *p_info)
+void	ft_check_3(char **map, t_tempcrs *p_tempcrs, t_map_info *p_info)
 {
 	p_tempcrs->size = 0;
 	while (ft_check_2(map, p_tempcrs, p_info) == 1)
@@ -56,7 +44,7 @@ void	ft_check_3(char **map, t_tempcrs *p_tempcrs, t_info *p_info)
 	}
 }
 
-void	ft_put_map(char **map, t_info *p_info)
+void	ft_put_map(char **map, t_map_info *p_info)
 {
 	int i;
 	int j;
@@ -75,14 +63,14 @@ void	ft_put_map(char **map, t_info *p_info)
 	}
 }
 
-void	ft_change_map(char **map, t_info *p_info)
+void	ft_change_map(char **map, t_map_info *p_info)
 {
 	int		i;
 	int		j;
-	t_bsq	*p_bsq;
+	t_tempcrs	*p_bsq;
 
 	i = 0;
-	p_bsq = malloc(sizeof(t_bsq));
+	p_bsq = malloc(sizeof(t_tempcrs));
 	set_bsq(p_bsq);
 	while (i < g_max)
 	{
@@ -99,14 +87,13 @@ void	ft_change_map(char **map, t_info *p_info)
 	return ;
 }
 
-void	ft_make_map(char **map, t_info *p_info)
+void	make_square(char **map, t_map_info *p_info)
 {
-	t_tempcrs *p_tempcrs;
+	t_tempcrs *p_tempcrs = malloc(sizeof(t_tempcrs));
 
 	g_max = 0;
 	g_col = 0;
 	g_row = 0;
-	p_tempcrs = malloc(sizeof(t_tempcrs));
 	set_crs(p_tempcrs);
 	while (p_tempcrs->row <= p_info->num_rows)
 	{

@@ -1,16 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   helpmakesquare.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: louisnop <louisnop@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/29 21:46:00 by louisnop          #+#    #+#             */
-/*   Updated: 2020/01/30 02:37:11 by louisnop         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
 #include "ft.h"
 
 extern	int g_max;
@@ -36,7 +23,7 @@ void	set_crs(t_tempcrs *p_tempcrs)
 	p_tempcrs->size = 0;
 }
 
-int		ft_check_1(char **map, int col, int row, t_info *p_info)
+int		ft_check_1(char **map, int col, int row, t_map_info *p_info)
 {
 	if (col == ft_map_colsize(map))
 	{
@@ -53,9 +40,9 @@ int		ft_check_1(char **map, int col, int row, t_info *p_info)
 	return (1);
 }
 
-void	set_bsq(t_bsq *p_bsq)
+void	set_bsq(t_tempcrs *p_bsq)
 {
-	p_bsq->x = g_col;
-	p_bsq->y = g_row;
+	p_bsq->col = g_col;
+	p_bsq->row = g_row;
 	p_bsq->size = g_max;
 }
