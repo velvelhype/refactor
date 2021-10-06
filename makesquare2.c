@@ -1,59 +1,71 @@
 #include "ft.h"
 
-extern	int g_max;
-extern	int g_col;
-extern	int g_row;
+extern	int max_square_size;
+extern	int max_square_col;
+extern	int max_square_row;
 
-int		ft_check_2(char **map, t_tempcrs *p_tempcrs, t_map_info *p_info)
+
+int		is_edge(char **map, int col, int row, t_map_info *map_info)
+{
+	if (col == map_colsize(map))
+		return (0);
+	if (row == map_info->num_rows + 1)
+		return (0);
+	if (map[row][col] == map_info->obstacle || map[row][col] == '\0')
+		return (0);
+	return (1);
+}
+
+int		ft_check_2(char **map, t_map_sizes *bookmark_info, t_map_info *map_info)
 {
 	int i;
 
 	i = 0;
-	while (i <= p_tempcrs->size)
+	while (i <= bookmark_info->size)
 	{
-		if (ft_check_1(map, p_tempcrs->col + i,
-		p_tempcrs->row + p_tempcrs->size, p_info) == 0)
+		if (is_edge(map, bookmark_info->col + i,
+		bookmark_info->row + bookmark_info->size, map_info) == 0)
 		{
 			return (0);
 		}
 		i++;
 	}
 	i = 0;
-	while (i <= p_tempcrs->size)
+	while (i <= bookmark_info->size)
 	{
-		if (ft_check_1(map, p_tempcrs->col + p_tempcrs->size,
-		p_tempcrs->row + i, p_info) == 0)
+		if (is_edge(map, bookmark_info->col + bookmark_info->size,
+		bookmark_info->row + i, map_info) == 0)
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-void	ft_check_3(char **map, t_tempcrs *p_tempcrs, t_map_info *p_info)
+void	detect_square_size(char **map, t_map_sizes *bookmark_info, t_map_info *map_info)
 {
-	p_tempcrs->size = 0;
-	while (ft_check_2(map, p_tempcrs, p_info) == 1)
+	bookmark_info->size = 0;
+	while (ft_check_2(map, bookmark_info, map_info))
 	{
-		p_tempcrs->size++;
+		bookmark_info->size++;
 	}
-	if (g_max < p_tempcrs->size)
+	if (max_square_size < bookmark_info->size)
 	{
-		g_max = p_tempcrs->size;
-		g_col = p_tempcrs->col;
-		g_row = p_tempcrs->row;
+		max_square_size = bookmark_info->size;
+		max_square_col = bookmark_info->col;
+		max_square_row = bookmark_info->row;
 	}
 }
 
-void	ft_put_map(char **map, t_map_info *p_info)
+void	draw_marked_map(char **map, t_map_info *map_info)
 {
 	int i;
 	int j;
 
 	i = 1;
-	while (i <= p_info->num_rows)
+	while (i <= map_info->num_rows)
 	{
 		j = 0;
-		while (j < ft_map_colsize(map))
+		while (j < map_colsize(map))
 		{
 			write(1, &map[i][j], 1);
 			j++;
@@ -63,49 +75,46 @@ void	ft_put_map(char **map, t_map_info *p_info)
 	}
 }
 
-void	ft_change_map(char **map, t_map_info *p_info)
+void	ft_change_map(char **map, t_map_info *map_info)
 {
 	int		i;
 	int		j;
 
 	i = 0;
-	while (i < g_max)
+	while (i < max_square_size)
 	{
 		j = 0;
-		while (j < g_max)
+		while (j < max_square_size)
 		{
-			map[g_row + i][g_col + j] = p_info->full;
+			map[max_square_row + i][max_square_col + j] = map_info->x_mark;
 			j++;
 		}
 		i++;
 	}
-	ft_put_map(map, p_info);
+	draw_marked_map(map, map_info);
 	return ;
 }
 
-void	make_square(char **map, t_map_info *p_info)
+void	make_square(char **map, t_map_info *map_info)
 {
-	t_tempcrs *p_tempcrs = malloc(sizeof(t_tempcrs));
+	t_map_sizes *bookmark_info = malloc(sizeof(t_map_sizes));
 
-	g_max = 0;
-	g_col = 0;
-	g_row = 0;
-	set_crs(p_tempcrs);
-	while (p_tempcrs->row <= p_info->num_rows)
+	init_bookmark(bookmark_info);
+	max_square_size = 0;
+	max_square_col = 0;
+	max_square_row = 0;
+	while (bookmark_info->row <= map_info->num_rows)
 	{
-		p_tempcrs->col = 0;
-		while (p_tempcrs->col < ft_map_colsize(map))
+		bookmark_info->col = 0;
+		while (bookmark_info->col < map_colsize(map))
 		{
-			if (ft_check_1(map, p_tempcrs->col,
-			p_tempcrs->row, p_info) == 1)
-			{
-				ft_check_3(map, p_tempcrs, p_info);
-			}
-			p_tempcrs->col++;
+			if (is_edge(map, bookmark_info->col, bookmark_info->row, map_info))
+				detect_square_size(map, bookmark_info, map_info);
+			bookmark_info->col++;
 		}
-		p_tempcrs->row++;
+		bookmark_info->row++;
 	}
-	ft_change_map(map, p_info);
-	free(p_tempcrs);
+	ft_change_map(map, map_info);
+	free(bookmark_info);
 	return ;
 }

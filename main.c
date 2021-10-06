@@ -47,7 +47,7 @@ int		for_stdio_map()
 		return (FAIL);
 	if (!(info = parse_map_info(map)))
 		return (FAIL);
-	if (ft_validate(map, info) == FAIL)
+	if (is_map_info_correct(map, info) == FAIL)
 		return (FAIL);
 	make_square(map, info);
 	ft_free(&map);
@@ -74,7 +74,7 @@ int		for_arg_map(int argc, char *argv[], int i)
 		return (FAIL);
 	if (!(info = parse_map_info(map)))
 		return (FAIL);
-	if (ft_validate(map, info) == FAIL)
+	if (is_map_info_correct(map, info) == FAIL)
 		return (FAIL);
 	make_square(map, info);
 	if (!(i + 1 == argc))

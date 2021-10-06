@@ -1,12 +1,12 @@
 #include "ft.h"
 
-int		is_t_info_(char **map, t_map_info *info)
+int		is_t_info_ok(char **map, t_map_info *info)
 {
 	if (!(map[0] && map[1]))
 		return (FAIL);
 	if (!(map[1][0] == info->empty ||
 			map[1][0] == info->obstacle ||
-			map[1][0] == info->full))
+			map[1][0] == info->x_mark))
 		return (FAIL);
 	return (SUCCESS);
 }
@@ -29,7 +29,7 @@ int		are_obstacle_and_empty_ok(char **map, t_map_info *info)
 	return (SUCCESS);
 }
 
-int		is_length_same(char **map, t_map_info *info)
+int		is_row_same(char **map, t_map_info *info)
 {
 	int i;
 	int len;
@@ -74,9 +74,9 @@ int		check_map_info(char **map)
 	while (++i < len - 3)
 		if (!(line[i] >= '0' && line[i] <= '9'))
 			return (FAIL);
-	if (!(ft_is_printable(line[len - 1]) &&
-				ft_is_printable(line[len - 2]) &&
-				ft_is_printable(line[len - 3])))
+	if (!(is_printable(line[len - 1]) &&
+				is_printable(line[len - 2]) &&
+				is_printable(line[len - 3])))
 		return (FAIL);
 	if (line[len - 1] == line[len - 2] ||
 			line[len - 2] == line[len - 3] ||
@@ -85,13 +85,11 @@ int		check_map_info(char **map)
 	return (SUCCESS);
 }
 
-int		ft_validate(char **map, t_map_info *info)
+int		is_map_info_correct(char **map, t_map_info *info)
 {
-	if (is_t_info_(map, info) == FAIL)
-		return (FAIL);
-	if (are_obstacle_and_empty_ok(map, info) == FAIL)
-		return (FAIL);
-	if (is_length_same(map, info) == FAIL)
+	if (is_t_info_ok(map, info) == FAIL
+	|| are_obstacle_and_empty_ok(map, info) == FAIL
+	|| is_row_same(map, info) == FAIL)
 		return (FAIL);
 	return (SUCCESS);
 }
