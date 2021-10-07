@@ -1,132 +1,90 @@
 #include "ft.h"
 
-void	ft_free(char ***map)
+void	free_map(char ***map)
 {
-	long int i;
+	long int row;
 
-	i = 0;
-	while ((*map)[i])
+	row = 0;
+	while ((*map)[row])
 	{
-		free((*map)[i]);
-		i++;
+		free((*map)[row]);
+		row++;
 	}
 	free(*map);
 	*map = NULL;
 }
 
-char	*ft_read(int ifd)
+char	*read_and_malloc(int ifd)
 {
-	char	*content;
+	char	*map_material;
 	char	buf[READ_SIZE + 1];
 	int		n;
 
-	content = NULL;
+	map_material = NULL;
 	while ((n = read(ifd, buf, READ_SIZE)) > 0)
 	{
 		buf[n] = '\0';
-		if (content == NULL)
-			content = ft_strdup(buf);
+		if (map_material == NULL)
+			map_material = ft_strdup(buf);
 		else
-			content = ft_strjoin(content, buf);
+			map_material = ft_strjoin(map_material, buf);
 	}
-	return (content);
+	return (map_material);
 }
 
-int		for_stdio_map()
+int		check_and_find_square(char *map_material)
 {
-	char	*content;
 	char	**map;
-	t_map_info	*info;
+	t_init_map_info	*info;
 
-	content = ft_read(0);
-	if (is_end_newline(content) == FAIL)
-		return (FAIL);
-	map = ft_split(content, "\n");
-	free(content);
-	if (check_map_info(map) == FAIL)
+	map = ft_split(map_material, "\n");
+	if (check_initial_map_info(map) == FAIL)
 		return (FAIL);
 	if (!(info = parse_map_info(map)))
 		return (FAIL);
-	if (is_map_info_correct(map, info) == FAIL)
+	if (is_initial_map_info_correct(map, info) == FAIL)
 		return (FAIL);
 	make_square(map, info);
-	ft_free(&map);
+	free_map(&map);
 	free(info);
 	return (SUCCESS);
 }
 
-int		find_square(char *content)
+int		newline_check(char *map_material)
 {
-	char	**map;
-	t_map_info	*info;
-
-	map = ft_split(content, "\n");
-	free(content);
-	if (check_map_info(map) == FAIL)
-		return (FAIL);
-	if (!(info = parse_map_info(map)))
-		return (FAIL);
-	if (is_map_info_correct(map, info) == FAIL)
-		return (FAIL);
-	make_square(map, info);
-	ft_free(&map);
-	free(info);
-	return (SUCCESS);
-}
-
-int		for_arg_map(char *argv[], int i)
-{
-	int		ifd;
-	char	*content;
-	char	**map;
-	t_map_info	*info;
-
-	if ((ifd = open(argv[i], O_RDONLY)) == -1)
-		return (FAIL);
-	content = ft_read(ifd);
-	close(ifd);
-	if (is_end_newline(content) == FAIL)
-		return (FAIL);
-	map = ft_split(content, "\n");
-	free(content);
-	if (check_map_info(map) == FAIL)
-		return (FAIL);
-	if (!(info = parse_map_info(map)))
-		return (FAIL);
-	if (is_map_info_correct(map, info) == FAIL)
-		return (FAIL);
-	make_square(map, info);
-	ft_free(&map);
-	free(info);
-	return (SUCCESS);
+	if (is_end_newline(map_material) == SUCCESS)
+		return (SUCCESS);
+	else
+		ft_putstr("map error\n");
+	return (FAIL);
 }
 
 int		main(int argc, char *argv[])
 {
 	int i = 0;
-	char *content;
+	int ifd;
+	char *map_material;
 
 	if (argc < 2)
 	{
-		content = ft_read(0);
-		if (is_end_newline(content) == SUCCESS)
-		{
-			if (find_square(content) == FAIL)
+		map_material = read_and_malloc(0);
+		if(newline_check(map_material) == SUCCESS)
+			if (check_and_find_square(map_material) == FAIL)
 				ft_putstr("map error\n");
-		}
-		else
-		{
-			ft_putstr("map error\n");
-		}
+		free(map_material);
 	}
 	else
 	{
 		while (++i < argc)
 		{
-			//コンテンツ読み込み
-			//チェック
-			if (for_arg_map(argv, i) == FAIL)
-			ft_putstr("map error\n");
+			if ((ifd = open(argv[i], O_RDONLY)) == -1)
+				return (FAIL);
+			map_material = read_and_malloc(ifd);
+			close(ifd);
+			if(newline_check(map_material) == SUCCESS)
+				if (check_and_find_square(map_material) == FAIL)
+					ft_putstr("map error\n");
+			free(map_material);
 			if (!(i + 1 == argc))
 				ft_putchar('\n');
 		} 

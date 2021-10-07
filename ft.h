@@ -12,20 +12,20 @@
 # define SUCCESS 1
 # define FAIL 0
 
-typedef	struct	s_map_info
+typedef	struct	s_init_map_info
 {
 	int		num_rows;
-	char	empty;
-	char	obstacle;
-	char	full;
-}				t_map_info;
+	char	empty_char;
+	char	obstacle_char;
+	char	full_char;
+}				t_init_map_info;
 
-typedef	struct	s_map_sizes
+typedef	struct	s_square_scales
 {
 	int	col;
 	int	row;
 	int	size;
-}				t_map_sizes;
+}				t_square_scales;
 
 int				max_square_size;
 int				max_square_col;
@@ -38,13 +38,13 @@ char			*ft_strjoin(char *s1, char *s2);
 char			**ft_split(char *str, char *charset);
 int				ft_atoi(char *str);
 int				is_printable(char c);
-int				check_map_info(char **map);
-t_map_info		*parse_map_info(char **map);
-int				is_map_info_correct(char **map, t_map_info *info);
+int				check_initial_map_info(char **map);
+t_init_map_info	*parse_map_info(char **map);
+int				is_initial_map_info_correct(char **map, t_init_map_info *info);
 int				is_end_newline(char *content);
-void			init_bookmark(t_map_sizes *p_tempcrs);
-int				is_edge(char **map, int col, int row, t_map_info *p_info);
-void			make_square(char **map, t_map_info *p_info);
+void			init_square_scales(t_square_scales *p_tempcrs);
+int				is_edge(char **map, int col, int row, t_init_map_info *p_info);
+void			make_square(char **map, t_init_map_info *p_info);
 int				map_colsize(char **map);
 
 #endif
