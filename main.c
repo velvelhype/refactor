@@ -79,8 +79,8 @@ int		main(int argc, char *argv[])
 					ft_putstr("map error\n");
 				free(map_material);
 			}
-		if (!(arg_offset + 1 == argc))
-			ft_putchar('\n');
+			if (!(arg_offset + 1 == argc))
+				ft_putchar('\n');
 		} 
 	}
 	return (0);
