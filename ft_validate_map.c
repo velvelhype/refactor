@@ -6,7 +6,7 @@ int		is_t_info_ok(char **map, t_map_info *info)
 		return (FAIL);
 	if (!(map[1][0] == info->empty ||
 			map[1][0] == info->obstacle ||
-			map[1][0] == info->x_mark))
+			map[1][0] == info->full))
 		return (FAIL);
 	return (SUCCESS);
 }

@@ -17,7 +17,7 @@ typedef	struct	s_map_info
 	int		num_rows;
 	char	empty;
 	char	obstacle;
-	char	x_mark;
+	char	full;
 }				t_map_info;
 
 typedef	struct	s_map_sizes

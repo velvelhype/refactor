@@ -86,7 +86,7 @@ char**	put_x_mark_on_map(char **map, t_map_info *map_info)
 		j = 0;
 		while (j < max_square_size)
 		{
-			map[max_square_row + i][max_square_col + j] = map_info->x_mark;
+			map[max_square_row + i][max_square_col + j] = map_info->full;
 			j++;
 		}
 		i++;

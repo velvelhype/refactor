@@ -1,22 +1,5 @@
 #include "ft.h"
 
-int		ft_strlen(char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-int		is_printable(char c)
-{
-	if (c < 0x20 || c == 0x7f)
-		return (0);
-	return (1);
-}
-
 t_map_info	*parse_map_info(char **map)
 {
 	t_map_info	*info;
@@ -36,7 +19,7 @@ t_map_info	*parse_map_info(char **map)
 	info->num_rows = ft_atoi(num);
 	info->empty = line[len - 3];
 	info->obstacle = line[len - 2];
-	info->x_mark = line[len - 1];
+	info->full = line[len - 1];
 	free(num);
 	return (info);
 }
