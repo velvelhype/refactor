@@ -21,5 +21,6 @@ t_init_map_info	*parse_map_info(char **map)
 	info->obstacle_char = line[len - 2];
 	info->full_char = line[len - 1];
 	free(num);
+
 	return (info);
 }

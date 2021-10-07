@@ -14,77 +14,77 @@ int		map_colsize(char **map)
 	return (count);
 }
 
-void	init_square_scales(t_square_scales *p_tempcrs)
+void	set_zero_square_scales(t_square_scales *p_tempcrs)
 {
 	p_tempcrs->row = 1;
 	p_tempcrs->col = 0;
 	p_tempcrs->size = 0;
 }
 
-int		is_edge(char **map, int col, int row, t_init_map_info *map_status)
+int		is_grid_squareble(char **map, int col, int row, t_init_map_info *init_map_info)
 {
 	if (col == map_colsize(map))
 		return (FAIL);
-	if (row == map_status->num_rows + 1)
+	if (row == init_map_info->num_rows + 1)
 		return (FAIL);
-	if (map[row][col] == map_status->obstacle_char || map[row][col] == '\0')
+	if (map[row][col] == init_map_info->obstacle_char || map[row][col] == '\0')
 		return (FAIL);
 
 	return (SUCCESS);
 }
 
-int		ft_check_2(char **map, t_square_scales *latest_square, t_init_map_info *map_status)
+int		valid_square(char **map, t_square_scales *square, t_init_map_info *init_map_info)
 {
 	int offset;
 
 	offset = 0;
-	while (offset <= latest_square->size)
+	while (offset <= square->size)
 	{
-		if (is_edge(map, latest_square->col + offset,
-		latest_square->row + latest_square->size, map_status) == FAIL)
+		if (is_grid_squareble(map, square->col + offset,
+		square->row + square->size, init_map_info) == FAIL)
 			return (FAIL);
-		if (is_edge(map, latest_square->col + latest_square->size,
-		latest_square->row + offset, map_status) == FAIL)
+		if (is_grid_squareble(map, square->col + square->size,
+		square->row + offset, init_map_info) == FAIL)
 			return (FAIL);
 		offset++;
 	}
 	return (SUCCESS);
 }
 
-void	detect_square_size(char **map, t_square_scales *latest_square, t_init_map_info *map_status)
+void	detect_square_size(char **map, t_square_scales *square, t_init_map_info *init_map_info)
 {
-	latest_square->size = 0;
+	square->size = 0;
 
-	while (ft_check_2(map, latest_square, map_status) == SUCCESS)
-		latest_square->size++;
+	while (valid_square(map, square, init_map_info) == SUCCESS)
+		square->size++;
 
-	if (max_square_size < latest_square->size)
+	if (max_square_size < square->size)
 	{
-		max_square_size	=	latest_square->size;
-		max_square_col	=	latest_square->col;
-		max_square_row	=	latest_square->row;
+		max_square_size	=	square->size;
+		max_square_col	=	square->col;
+		max_square_row	=	square->row;
 	}
 }
 
-void	draw_marked_map(char **map, t_init_map_info *map_status)
+void	draw_marked_map(char **map, t_init_map_info *init_map_info)
 {
 	int row = 1;
 	int col;
 
-	while (row <= map_status->num_rows)
+	while (row <= init_map_info->num_rows)
 	{
 		col = 0;
 		while (col < map_colsize(map))
 		{
-			write(1, &map[row][col], 1);
+			ft_putchar(map[row][col]);
 			col++;
 		}
-		write(1, "\n", 1);
+		ft_putchar('\n');
 		row++;
 	}
 }
 
-char**	put_full_mark_on_map(char **map, t_init_map_info *map_status)
+char**	put_full_mark_on_map(char **map, t_init_map_info *init_map_info)
 {
 	int		row_offset;
 	int		col_offset;
@@ -95,7 +95,7 @@ char**	put_full_mark_on_map(char **map, t_init_map_info *map_status)
 		col_offset = 0;
 		while (col_offset < max_square_size)
 		{
-			map[max_square_row + row_offset][max_square_col + col_offset] = map_status->full_char;
+			map[max_square_row + row_offset][max_square_col + col_offset] = init_map_info->full_char;
 			col_offset++;
 		}
 		row_offset++;
@@ -103,27 +103,27 @@ char**	put_full_mark_on_map(char **map, t_init_map_info *map_status)
 	return	(map);
 }
 
-void	make_square(char **map, t_init_map_info *map_status)
+void	make_square(char **map, t_init_map_info *init_map_info)
 {
-	t_square_scales *latest_square = malloc(sizeof(t_square_scales));
-	init_square_scales(latest_square);
+	t_square_scales *square = malloc(sizeof(t_square_scales));
+	set_zero_square_scales(square);
 
 	max_square_size = 0;
 	max_square_col = 0;
 	max_square_row = 0;
 
-	while (latest_square->row <= map_status->num_rows)
+	while (square->row <= init_map_info->num_rows)
 	{
-		latest_square->col = 0;
-		while (latest_square->col < map_colsize(map))
+		square->col = 0;
+		while (square->col < map_colsize(map))
 		{
-			if (is_edge(map, latest_square->col, latest_square->row, map_status))
-				detect_square_size(map, latest_square, map_status);
-			latest_square->col++;
+			if (is_grid_squareble(map, square->col, square->row, init_map_info) == SUCCESS)
+				detect_square_size(map, square, init_map_info);
+			square->col++;
 		}
-		latest_square->row++;
+		square->row++;
 	}
-	map = put_full_mark_on_map(map, map_status);
-	draw_marked_map(map, map_status);
-	free(latest_square);
+	map = put_full_mark_on_map(map, init_map_info);
+	draw_marked_map(map, init_map_info);
+	free(square);
 }

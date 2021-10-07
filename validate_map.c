@@ -59,7 +59,7 @@ int		is_end_newline(char *content)
 	return (SUCCESS);
 }
 
-int		check_initial_map_info(char **map)
+int		valid_initial_map_info(char **map)
 {
 	int		len;
 	char	*initial_map_info;
@@ -85,7 +85,7 @@ int		check_initial_map_info(char **map)
 	return (SUCCESS);
 }
 
-int		is_initial_map_info_correct(char **map, t_init_map_info *info)
+int		is_init_and_parsed_info_same(char **map, t_init_map_info *info)
 {
 	if (is_t_info_ok(map, info) == FAIL
 	|| are_obstacle_and_empty_ok(map, info) == FAIL
