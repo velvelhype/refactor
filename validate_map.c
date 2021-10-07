@@ -1,17 +1,34 @@
+/*
+====================================================
+File overview 
+----------------------------------------------------
+functions validates map;
+----------------------------------------------------
+Index
+----------------------------------------------------
+is_t_info_correct
+are_obstacle_and_empty_only
+is_row_same
+is_end_newline
+valid_initial_map_info
+is_init_and_parsed_info_same
+====================================================
+*/
+
 #include "ft.h"
 
-int		is_t_info_ok(char **map, t_init_map_info *info)
+int		is_t_info_correct(char **map, t_initial_map_info *info)
 {
 	if (!(map[0] && map[1]))
 		return (FAIL);
-	if (!(map[1][0] == info->empty_char ||
+	if (!(	map[1][0] == info->empty_char ||
 			map[1][0] == info->obstacle_char ||
 			map[1][0] == info->full_char))
 		return (FAIL);
 	return (SUCCESS);
 }
 
-int		are_obstacle_and_empty_ok(char **map, t_init_map_info *info)
+int		are_obstacle_and_empty_only(char **map, t_initial_map_info *info)
 {
 	int row;
 	int col;
@@ -29,7 +46,7 @@ int		are_obstacle_and_empty_ok(char **map, t_init_map_info *info)
 	return (SUCCESS);
 }
 
-int		is_row_same(char **map, t_init_map_info *info)
+int		is_row_same(char **map, t_initial_map_info *info)
 {
 	int row;
 	int len;
@@ -85,10 +102,10 @@ int		valid_initial_map_info(char **map)
 	return (SUCCESS);
 }
 
-int		is_init_and_parsed_info_same(char **map, t_init_map_info *info)
+int		is_init_and_parsed_info_same(char **map, t_initial_map_info *info)
 {
-	if (is_t_info_ok(map, info) == FAIL
-	|| are_obstacle_and_empty_ok(map, info) == FAIL
+	if (is_t_info_correct(map, info) == FAIL
+	|| are_obstacle_and_empty_only(map, info) == FAIL
 	|| is_row_same(map, info) == FAIL)
 		return (FAIL);
 	return (SUCCESS);

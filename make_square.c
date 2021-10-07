@@ -1,3 +1,22 @@
+/*
+====================================================
+File overview 
+----------------------------------------------------
+Drawing max drawble size square on the map;
+----------------------------------------------------
+Index
+----------------------------------------------------
+map_colsize
+set_zero_square_scales
+is_grid_squareble
+valid_square
+detect_square_size
+put_full_mark_on_map
+draw_marked_map
+make_square
+====================================================
+*/
+
 #include "ft.h"
 
 extern	int	max_square_size;
@@ -21,7 +40,7 @@ void	set_zero_square_scales(t_square_scales *p_tempcrs)
 	p_tempcrs->size = 0;
 }
 
-int		is_grid_squareble(char **map, int col, int row, t_init_map_info *init_map_info)
+int		is_grid_squareble(char **map, int col, int row, t_initial_map_info *init_map_info)
 {
 	if (col == map_colsize(map))
 		return (FAIL);
@@ -33,7 +52,7 @@ int		is_grid_squareble(char **map, int col, int row, t_init_map_info *init_map_i
 	return (SUCCESS);
 }
 
-int		valid_square(char **map, t_square_scales *square, t_init_map_info *init_map_info)
+int		valid_square(char **map, t_square_scales *square, t_initial_map_info *init_map_info)
 {
 	int offset;
 
@@ -51,7 +70,7 @@ int		valid_square(char **map, t_square_scales *square, t_init_map_info *init_map
 	return (SUCCESS);
 }
 
-void	detect_square_size(char **map, t_square_scales *square, t_init_map_info *init_map_info)
+void	detect_square_size(char **map, t_square_scales *square, t_initial_map_info *init_map_info)
 {
 	square->size = 0;
 
@@ -66,25 +85,7 @@ void	detect_square_size(char **map, t_square_scales *square, t_init_map_info *in
 	}
 }
 
-void	draw_marked_map(char **map, t_init_map_info *init_map_info)
-{
-	int row = 1;
-	int col;
-
-	while (row <= init_map_info->num_rows)
-	{
-		col = 0;
-		while (col < map_colsize(map))
-		{
-			ft_putchar(map[row][col]);
-			col++;
-		}
-		ft_putchar('\n');
-		row++;
-	}
-}
-
-char**	put_full_mark_on_map(char **map, t_init_map_info *init_map_info)
+char**	put_full_mark_on_map(char **map, t_initial_map_info *init_map_info)
 {
 	int		row_offset;
 	int		col_offset;
@@ -103,7 +104,26 @@ char**	put_full_mark_on_map(char **map, t_init_map_info *init_map_info)
 	return	(map);
 }
 
-void	make_square(char **map, t_init_map_info *init_map_info)
+
+void	draw_marked_map(char **map, t_initial_map_info *init_map_info)
+{
+	int row = 1;
+	int col;
+
+	while (row <= init_map_info->num_rows)
+	{
+		col = 0;
+		while (col < map_colsize(map))
+		{
+			ft_putchar(map[row][col]);
+			col++;
+		}
+		ft_putchar('\n');
+		row++;
+	}
+}
+
+void	make_square(char **map, t_initial_map_info *init_map_info)
 {
 	t_square_scales *square = malloc(sizeof(t_square_scales));
 	set_zero_square_scales(square);

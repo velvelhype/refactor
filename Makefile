@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 TARGET = bsq
-SRCS = main.c  parse_map_info.c operate_strings.c  validate_map.c make_square.c
-OBJS = main.o  parse_map_info.o operate_strings.o  validate_map.o make_square.o
+SRCS = start_processing.c operate_strings.c  validate_map.c make_square.c
+OBJS = start_processing.o operate_strings.o  validate_map.o make_square.o
 
 all: $(TARGET)
 

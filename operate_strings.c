@@ -1,3 +1,33 @@
+/*
+====================================================
+File overview 
+----------------------------------------------------
+Funcs operate string;
+----------------------------------------------------
+Index
+----------------------------------------------------
+is_printable
+ft_putchar
+ft_putstr
+ft_strlen
+ft_strdup
+ft_strjoin
+------------
+For ft_atoi
+------------
+ft_isspace
+ft_atoi
+------------
+For ft_split
+------------
+ft_is_in_charset
+ft_get_wc
+ft_update_in_word
+ft_add_last_word
+ft_split
+====================================================
+*/
+
 #include "ft.h"
 
 int		is_printable(char c)
