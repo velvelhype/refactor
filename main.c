@@ -90,14 +90,14 @@ int		main(int argc, char *argv[])
 	if (argc < 2)
 	{
 		if 	(for_stdio_map() == FAIL)
-			write(1, "map error\n", 10);
+		ft_putstr("map error\n");
 	}
 	else
 	{
 		while (++i < argc)
 		{
 			if (for_arg_map(argc, argv, i) == FAIL)
-				write(1, "map error\n", 10);
+			ft_putstr("map error\n");
 		} 
 	}
 	return (0);

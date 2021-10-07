@@ -75,7 +75,7 @@ void	draw_marked_map(char **map, t_map_info *map_info)
 	}
 }
 
-void	ft_change_map(char **map, t_map_info *map_info)
+char**	put_x_mark_on_map(char **map, t_map_info *map_info)
 {
 	int		i;
 	int		j;
@@ -91,18 +91,18 @@ void	ft_change_map(char **map, t_map_info *map_info)
 		}
 		i++;
 	}
-	draw_marked_map(map, map_info);
-	return ;
+	return	(map);
 }
 
 void	make_square(char **map, t_map_info *map_info)
 {
 	t_map_sizes *bookmark_info = malloc(sizeof(t_map_sizes));
-
 	init_bookmark(bookmark_info);
+
 	max_square_size = 0;
 	max_square_col = 0;
 	max_square_row = 0;
+
 	while (bookmark_info->row <= map_info->num_rows)
 	{
 		bookmark_info->col = 0;
@@ -114,7 +114,7 @@ void	make_square(char **map, t_map_info *map_info)
 		}
 		bookmark_info->row++;
 	}
-	ft_change_map(map, map_info);
+	map = put_x_mark_on_map(map, map_info);
+	draw_marked_map(map, map_info);
 	free(bookmark_info);
-	return ;
 }
